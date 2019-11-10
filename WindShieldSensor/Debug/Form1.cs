@@ -43,8 +43,21 @@ namespace Debug
                         pictureBox2.Image?.Dispose();
                         pictureBox2.Image = manager.RecievedB?.Data?.Clone() as Bitmap;
                     });
-                   
-                    Thread.Sleep(300);
+
+                    pictureBox3.Invoke((MethodInvoker)delegate
+                    {
+                        pictureBox3.Image?.Dispose();
+                        pictureBox3.Image = manager.RecievedC?.Data?.Clone() as Bitmap;
+                    });
+
+                    pictureBox4.Invoke((MethodInvoker)delegate
+                    {
+                        pictureBox4.Image?.Dispose();
+                        pictureBox4.Image = manager.RecievedD?.Data?.Clone() as Bitmap;
+                    });
+
+                    //HACK -> Winforms and Bitmaps do not like multi threading
+                    Thread.Sleep(1000);
                    
                 }
 

@@ -70,10 +70,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\InterlockedHelper.cs" />
     <Compile Include="Manager\SensorHubManager.cs" />
     <Compile Include="Processing\ProcessingA.cs" />
     <Compile Include="Processing\ProcessingB.cs" />
+    <Compile Include="Processing\ProcessingC.cs" />
+    <Compile Include="Processing\ProcessingD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

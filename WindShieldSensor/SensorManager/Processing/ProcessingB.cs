@@ -40,20 +40,6 @@ namespace SensorManager.Processing
             //TODO DO Work here like yolo calculation and other stuff
             Thread.Sleep(new Random().Next(50, 70));
 
-            //var image1 = leftFrame.Data;
-            //var image2 = leftFrame.Data;
-
-            //Image<Gray, Byte> imageResult = new Image<Gray, Byte>(image1.Width, image1.Height*2);
-
-
-            //imageResult.ROI = new Rectangle(0, 0, image1.Width, image1.Height);
-            //image1.CopyTo(imageResult);
-            //imageResult.ROI = new Rectangle(0, image1.Height, image2.Width, image2.Height);
-            //image2.CopyTo(imageResult);
-            //imageResult.ROI = Rectangle.Empty;
-            //CreateResult Frame
-            //var newFrame = new Frame<Bitmap>(imageResult.Bitmap);
-
             //CreateResult Frame
             var newFrame = new Frame<Bitmap>(leftFrame.Data.Bitmap);
 

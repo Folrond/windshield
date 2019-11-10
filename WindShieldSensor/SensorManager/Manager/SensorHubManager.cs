@@ -24,6 +24,9 @@ namespace SensorManager.Manager
         private ProcessingA processingA;
         private ProcessingB processingB;
 
+        private ProcessingC processingC;
+        private ProcessingD processingD;
+
 
         private Action<Frame<Bitmap>> recievedAHandler;
         private Action<Frame<Bitmap>> recievedBHandler;
@@ -70,6 +73,47 @@ namespace SensorManager.Manager
             }
         }
 
+        public Frame<Bitmap> RecievedC
+        {
+            get
+            {
+                lock (lockA)
+                {
+                    return new Frame<Bitmap>(processingC.ActualFrame?.Data?.Bitmap.Clone() as Bitmap);
+                }
+
+            }
+            set
+            {
+                lock (lockA)
+                {
+                    recievedA = value;
+                }
+            }
+        }
+
+        public Frame<Bitmap> RecievedD
+        {
+            get
+            {
+                lock (lockB)
+                {
+                    return new Frame<Bitmap>(processingD.ActualFrame?.Data?.Clone() as Bitmap);
+                }
+
+            }
+            set
+            {
+                lock (lockB)
+                {
+                    recievedB = value;
+                }
+            }
+        }
+
+
+
+
         private Frame<Bitmap> recievedA;
         private Frame<Bitmap> recievedB;
 
@@ -83,6 +127,10 @@ namespace SensorManager.Manager
 
             processingA = new ProcessingA(leftCamera1, rightCamera1);
             processingB = new ProcessingB(leftCamera2, rightCamera2);
+
+            processingC = new ProcessingC(leftCamera2, rightCamera2);
+            processingD = new ProcessingD(processingC);
+
             RegisterForPushEvents();
         }
 
@@ -93,6 +141,9 @@ namespace SensorManager.Manager
 
             processingA.StartQuery();
             processingB.StartQuery();
+
+            processingC.StartQuery();
+            processingD.StartQuery();
         }
 
 
@@ -111,6 +162,8 @@ namespace SensorManager.Manager
             processingB.RegisterForActualFramePush(recievedBHandler);
 
         }
+
+
 
 
     }

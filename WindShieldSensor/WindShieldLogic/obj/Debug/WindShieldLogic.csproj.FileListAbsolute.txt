@@ -1,0 +1,6 @@
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\bin\Debug\WindShieldLogic.dll
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\bin\Debug\WindShieldLogic.pdb
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\obj\Debug\WindShieldLogic.csprojAssemblyReference.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\obj\Debug\WindShieldLogic.csproj.CoreCompileInputs.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\obj\Debug\WindShieldLogic.dll
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldLogic\obj\Debug\WindShieldLogic.pdb

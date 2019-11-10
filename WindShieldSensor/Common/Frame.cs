@@ -8,15 +8,26 @@ namespace Common
 {
     public class Frame<T> : ICloneable, IDisposable
     {
-
         public Frame()
         {
+            Data = default(T);
+        }
+
+        public Frame(T data)
+        {
+            Data = data;
             TimeStamp = DateTime.Now;
         }
 
-        public DateTime TimeStamp { get; set; }
+        public Frame(T data, DateTime timeStamp)
+        {
+            Data = data;
+            TimeStamp = timeStamp;
+        }
 
-        public T Data { get; set; }
+        public DateTime TimeStamp { get;}
+
+        public T Data { get; }
 
         //TODO Implement deep copy
         public virtual object Clone()
@@ -30,6 +41,8 @@ namespace Common
             if(Data is IDisposable disposable)
                 disposable.Dispose();
         }
+
+        public bool IsEmpty => Data == null;
     }
 }
     

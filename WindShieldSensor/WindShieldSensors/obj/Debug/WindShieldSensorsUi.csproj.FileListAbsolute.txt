@@ -1,0 +1,15 @@
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\bin\Debug\WindShieldSensors.exe.config
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\bin\Debug\WindShieldSensors.exe
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\bin\Debug\WindShieldSensors.pdb
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensorsUi.csprojAssemblyReference.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\MainWindow.g.cs
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\App.g.cs
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors_MarkupCompile.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors_MarkupCompile.lref
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\MainWindow.baml
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors.g.resources
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors.Properties.Resources.resources
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensorsUi.csproj.GenerateResource.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensorsUi.csproj.CoreCompileInputs.cache
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors.exe
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\WindShieldSensors\obj\Debug\WindShieldSensors.pdb

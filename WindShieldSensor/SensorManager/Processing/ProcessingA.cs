@@ -1,40 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using SensorManager.Helpers;
 using Sensors.Sensors;
 
 namespace SensorManager.Processing
 {
-    public class ProcessingA : RunnableDataProvider<string>, IDisposable
+    public class ProcessingA : RunnableDataProvider<Bitmap>, IDisposable
     {
         private readonly RgbCamera leftCamera;
         private readonly RgbCamera rightCamera;
 
-        //TODO Enrich get/set to produce statistics about dropped (unused) frames, and lag
+        //TODO Enrich get/set to produce statistics about dropped (unused) frames, and latency
         //TODO Enrich get/set to introduce Epsilon distance
-        public Frame<object> RecievedLeftFrame { get; set; }
-        public Frame<object> RecievedRightFrame { get; set; }
+        private Frame<Mat> leftFrame = new Frame<Mat>();
+        private Frame<Mat> rightFrame = new Frame<Mat>();
 
-        private Action recievedLeftFrameAction;
-        private Action recievedRightFrameAction;
-
-        private object recieveLockingObject = new object();
-
-        //TODO This needs finishing, we'd like to prevent useless data recalculation (if this module is fast but modules above are not)
-        //TODO At the begining we need to wait for booth required data
-        AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-
-        public ProcessingA()
+        public Frame<Mat> RecievedLeftFrame
         {
-            leftCamera = new RgbCamera("ResourcePath to Left Camera");
-            rightCamera = new RgbCamera("ResourcePath to Right Camera");
-            RegisterForPushEvents();
+            get
+            {
+                if (leftFrame == null)
+                    return null;
+                return InterlockedHelper.SafeRead(ref leftFrame);
+            }
+            set => InterlockedHelper.SafeWrite(ref leftFrame, value);
         }
+
+        public Frame<Mat> RecievedRightFrame
+        {
+            get
+            {
+                if (rightFrame == null)
+                    return null;
+                return InterlockedHelper.SafeRead(ref rightFrame);
+            }
+            set => InterlockedHelper.SafeWrite(ref rightFrame, value);
+        }
+        
+        private Action<Frame<Mat>> recievedLeftFrameAction;
+        private Action<Frame<Mat>> recievedRightFrameAction;
 
         public ProcessingA(RgbCamera cameraLeft, RgbCamera cameraRight)
         {
@@ -43,62 +56,70 @@ namespace SensorManager.Processing
             RegisterForPushEvents();
         }
 
-        private void RegisterForPushEvents()
+        public override Frame<Bitmap> QueryFrame()
         {
-            recievedLeftFrameAction = () =>
-            {
-                lock (recieveLockingObject)
-                {
-                    RecievedLeftFrame = leftCamera.ActualCurrentFrame;
-                }
-                
-            };
-            recievedRightFrameAction = () =>
-            {
-                lock (recieveLockingObject)
-                {
-                    RecievedRightFrame = rightCamera.ActualCurrentFrame;
-                }
-            };
+            var leftFrame = RecievedLeftFrame;
+            var rightFrame = RecievedRightFrame;
 
-            leftCamera.ActualFramePushEvent += recievedLeftFrameAction;
-            rightCamera.ActualFramePushEvent += recievedRightFrameAction;
-        }
+            if (!CanExecute(leftFrame, rightFrame))
+                return null;
 
-        protected override void QueryFrame()
-        {
-            var frames = ReadFrames();
             //TODO DO Work here like yolo calculation and other stuff
             Thread.Sleep(new Random().Next(50,70));
 
-            this.ActualCurrentFrame = new Frame<string>
-            {
-                TimeStamp = DateTime.Now,
-                Data = "ProcessingA"
-            };
+            var image1 = leftFrame.Data;
+            var image2 = leftFrame.Data;
 
-            this.OnFrameChanged();
-            
+            //Image<Gray, Byte> imageResult = new Image<Gray, Byte>(image1.Width, image1.Height * 2);
+
+
+            //imageResult.ROI = new Rectangle(0, 0, image1.Width, image1.Height);
+            //image1.CopyTo(imageResult);
+            //imageResult.ROI = new Rectangle(0, image1.Height, image2.Width, image2.Height);
+            //image2.CopyTo(imageResult);
+            //imageResult.ROI = Rectangle.Empty;
+            ////CreateResult Frame
+            //var newFrame = new Frame<Bitmap>(imageResult.Bitmap);
+            //CreateResult Frame
+            var newFrame = new Frame<Bitmap>(image1.Bitmap);
+
+            //Push data
+            OnFrameChanged(newFrame);
+
+
+            return newFrame;
         }
 
-        //TODO Return List, Dto, Whatever
-        private object ReadFrames()
+        private bool CanExecute(Frame<Mat> frame1, Frame<Mat> frame2)
         {
-            lock (recieveLockingObject)
-            {
-                var f1 = RecievedRightFrame;
-                var f2 = RecievedLeftFrame;
+            if (frame1 == null || frame2 == null)
+                return false;
 
-                return new {f1,f2};
-            }
-            
+            if (frame1.IsEmpty || frame2.IsEmpty)
+                return false;
+
+            return true;
         }
-
 
         public void Dispose()
         {
-            leftCamera.ActualFramePushEvent -= recievedLeftFrameAction;
-            rightCamera.ActualFramePushEvent -= recievedRightFrameAction;
+            leftCamera.UnregisterFromActualFramePush(recievedLeftFrameAction);
+            rightCamera.UnregisterFromActualFramePush(recievedRightFrameAction);
+        }
+
+        private void RegisterForPushEvents()
+        {
+            recievedLeftFrameAction = (frame) =>
+            {
+                RecievedLeftFrame = frame;
+            };
+            recievedRightFrameAction = (frame) =>
+            {
+                RecievedRightFrame = frame;
+            };
+
+            leftCamera.RegisterForActualFramePush(recievedLeftFrameAction);
+            rightCamera.RegisterForActualFramePush(recievedRightFrameAction);
 
         }
     }

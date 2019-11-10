@@ -1,41 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
-using Sensors.Interfaces;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace Sensors.Sensors
 {
 
-    public class RgbCamera:RunnableDataProvider<object>,IRgbCamera<object>
+    public class RgbCamera:RunnableDataProvider<Mat>
     {
-        
-        public object CameraObject { get; set; }
 
-        
-        public RgbCamera(string resourcePath)
+        private Capture capture;
+
+        public RgbCamera()
+        {   //This capture will use the first (and only in my demo) camera.
+            //You can specify the camera index.
+            capture = new Capture();
+        }
+
+        public RgbCamera(int resourcePath)
         {
-            //USE resourcePath to init actual camera
-            CameraObject = new object();
+            capture = new Capture(resourcePath);
         }
 
 
-        protected override void QueryFrame()
+        public override Frame<Mat> QueryFrame()
         {
-            var frame = new Frame<object>();
-            
-            //GET FRAME
-            CameraObject.ToString();
-            frame.Data = CameraObject.ToString();
-            frame.TimeStamp = DateTime.Now;
-
-            this.ActualCurrentFrame = frame;
-
-            this.OnFrameChanged();
-
+            var img = capture.QueryFrame();
+            var frame = new Frame<Mat>(img);
+            OnFrameChanged(frame);
+            return frame;
+            //var bmp = img.Bitmap;
+            //.ToImage<Bgr, byte>();
         }
 
     }

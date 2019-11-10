@@ -7,61 +7,28 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    //INotifyPropChanged can be considered
-    public abstract class RunnableDataProvider<T> : IDataProvider<T>
+    //This class can start a background thread to do work.
+    //If a new result is produced the subscribers will get this new data.
+    public abstract class RunnableDataProvider<T>
     {
-        public event Action ActualFramePushEvent;
-        public event Action CopiedFramePushEvent;
-
-        //TODO Not really necessary since the "readers" are actually running on our data producing thread after an event notification
-        public ReaderWriterLockSlim ProviderLock = new ReaderWriterLockSlim();
-
-        private Frame<T> currenFrame;
-
-        //TODO We need to know when to dispose a Frame, disposing it when we get a new one is not an option since we don't know who's using it.
-        //TODO Solution: Count ReadAttempts if no one read this prop until the next write occurs dispose the frame data.
-        public Frame<T> ActualCurrentFrame
-        {
-            get
-            {
-                try
-                {
-                    ProviderLock.EnterReadLock();
-                    return currenFrame;
-                }
-                finally
-                {
-                    ProviderLock.ExitReadLock();
-                }
-            }
-            set
-            {
-                try
-                {
-                    ProviderLock.EnterWriteLock();
-                    currenFrame = value;
-                }
-                finally
-                {
-                    ProviderLock.ExitWriteLock();
-                }
-
-            }
-        }
-
-        //Since this is a deep copied object caller is responsible for disposing it if possible
-        public Frame<T> CopiedCurrentFrame => (Frame<T>)ActualCurrentFrame.Clone();
-
-
-        protected CancellationTokenSource source;
-        protected CancellationToken token;
-        protected Task serviceTask;
+        protected event Action<Frame<T>> ActualFramePushEvent;
+        protected event Action<Frame<T>> CopiedFramePushEvent;
+        
+        private CancellationTokenSource source;
+        private CancellationToken token;
+        private Task serviceTask;
 
         public TaskStatus ServiceStatus => serviceTask?.Status ?? TaskStatus.Created;
 
+        protected RunnableDataProvider()
+        {
+            source = new CancellationTokenSource();
+            token = source.Token;
+        }
+
         public virtual void StartQuery()
         {
-            if (ServiceStatus == TaskStatus.Canceled || ServiceStatus == TaskStatus.Faulted)
+            if (ServiceStatus == TaskStatus.Canceled || ServiceStatus == TaskStatus.Faulted || ServiceStatus == TaskStatus.Created)
             {
                 token = source.Token;
 
@@ -84,17 +51,39 @@ namespace Common
             }
         }
 
-        protected abstract void QueryFrame();
+        //This is method will do the actual work.
+        public abstract Frame<T> QueryFrame();
 
         public virtual void StopQuery()
         {
             source.Cancel();
         }
 
-        protected virtual void OnFrameChanged()
+        protected virtual void OnFrameChanged(Frame<T> newFrame)
         {
-            ActualFramePushEvent?.Invoke();
-            CopiedFramePushEvent?.Invoke();
+            ActualFramePushEvent?.Invoke(newFrame);
+            CopiedFramePushEvent?.Invoke((Frame<T>)newFrame.Clone());
+        }
+
+
+        public virtual void RegisterForActualFramePush(Action<Frame<T>> eventHandler)
+        {
+            ActualFramePushEvent += eventHandler;
+        }
+
+        public virtual void RegisterForCopiedFramePush(Action<Frame<T>> eventHandler)
+        {
+            CopiedFramePushEvent += eventHandler;
+        }
+
+        public virtual void UnregisterFromActualFramePush(Action<Frame<T>> eventHandler)
+        {
+            ActualFramePushEvent -= eventHandler;
+        }
+
+        public virtual void UnregisterFromCopiedFramePush(Action<Frame<T>> eventHandler)
+        {
+            CopiedFramePushEvent -= eventHandler;
         }
     }
 }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sensors", "Sensors\Sensors.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{636F11AA-2932-43DB-BC31-F9B67954DDDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debug", "Debug\Debug.csproj", "{B525E933-5595-4130-AFC7-5153EDB8E0D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{636F11AA-2932-43DB-BC31-F9B67954DDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{636F11AA-2932-43DB-BC31-F9B67954DDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{636F11AA-2932-43DB-BC31-F9B67954DDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B525E933-5595-4130-AFC7-5153EDB8E0D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B525E933-5595-4130-AFC7-5153EDB8E0D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B525E933-5595-4130-AFC7-5153EDB8E0D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B525E933-5595-4130-AFC7-5153EDB8E0D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

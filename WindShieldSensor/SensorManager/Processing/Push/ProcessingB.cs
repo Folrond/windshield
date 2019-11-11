@@ -14,7 +14,7 @@ using Sensors.Sensors;
 
 namespace SensorManager.Processing
 {
-    class ProcessingB : RunnableDataProvider<Mat>
+   public class ProcessingB : RunnableDataProvider<Mat>
     {
         private readonly RgbCamera leftCamera;
         private readonly RgbCamera rightCamera;

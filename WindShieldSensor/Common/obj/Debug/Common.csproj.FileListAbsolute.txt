@@ -3,3 +3,4 @@ C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\Common\bin\D
 C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\Common\obj\Debug\Common.dll
 C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\Common\obj\Debug\Common.pdb
+C:\Users\Kiss Viktor\Documents\Prog\Aut\windshield\WindShieldSensor\Common\obj\Debug\Common.csprojAssemblyReference.cache

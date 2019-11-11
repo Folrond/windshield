@@ -11,7 +11,7 @@ using Sensors.Sensors;
 
 namespace SensorManager.Manager
 {
-    class PushBPushE: IDisposable
+    public class PushBPushE : IDisposable
     {
         private RgbCamera leftCamera;
         private RgbCamera rightCamera;
@@ -20,12 +20,31 @@ namespace SensorManager.Manager
         private ProcessingE processingE;
 
         private Action<Frame<Mat>> recievedBHandler;
+        private Action<Frame<Bitmap>> recievedEHandler;
 
 
-        //DEBUG
+        public PushBPushE(int camId)
+        {
+            leftCamera=new RgbCamera(camId);
+            rightCamera = new RgbCamera(camId);
+            
+            processingB = new ProcessingB(leftCamera,rightCamera);
+            processingE = new ProcessingE(processingB);
+
+            RegisterForPushEvents();
+
+        }
+
+        #region ╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ
+        
+        //DEBUG SECTION
+        //For Debugging we lock the read/writes
+        //Also for debugging we sniff the results of B
         object lockB = new object();
+        object lockE = new object();
 
         private Frame<Mat> recievedB;
+        private Frame<Bitmap> recievedE;
 
         public Frame<Mat> RecievedB
         {
@@ -46,14 +65,42 @@ namespace SensorManager.Manager
             }
         }
 
+        public Frame<Bitmap> RecievedE
+        {
+            get
+            {
+                lock (lockE)
+                {
+                    return new Frame<Bitmap>(recievedB?.Data?.Bitmap.Clone() as Bitmap);
+                }
+
+            }
+            set
+            {
+                lock (lockE)
+                {
+                    recievedE = value;
+                }
+            }
+        }
+        #endregion
+
 
         private void RegisterForPushEvents()
         {
 
             recievedBHandler = (frame) => { RecievedB = frame; };
+            recievedEHandler = (frame) => { RecievedE = frame; };
 
             processingB.RegisterForActualFramePush(recievedBHandler);
+            processingE.RegisterForActualFramePush(recievedEHandler);
 
+        }
+
+        public void Start()
+        {
+            this.processingB.StartQuery();
+            this.processingE.StartQuery();
         }
 
 
@@ -61,6 +108,8 @@ namespace SensorManager.Manager
         {
 
             processingB.UnregisterFromActualFramePush(recievedBHandler);
+            processingE.RegisterForActualFramePush(recievedEHandler);
+
         }
 
 

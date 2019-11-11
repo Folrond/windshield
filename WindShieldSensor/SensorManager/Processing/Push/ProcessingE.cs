@@ -13,7 +13,7 @@ using Sensors.Sensors;
 
 namespace SensorManager.Processing
 {
-    class ProcessingE : RunnableDataProvider<Bitmap>,IDisposable
+   public class ProcessingE : RunnableDataProvider<Bitmap>,IDisposable
     {
         private ProcessingB b;
         private Action<Frame<Mat>> pushEventHandler;

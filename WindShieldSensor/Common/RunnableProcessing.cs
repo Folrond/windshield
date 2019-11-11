@@ -8,6 +8,7 @@ using SensorManager.Helpers;
 
 namespace Common
 {
+    //Same thing as the RunnableDataProv, except here we expect the our users to ask us (pull) our data.
     public abstract class RunnableProcessing<T>
     {
         private Frame<T> actualFrame;

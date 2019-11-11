@@ -70,11 +70,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\PullCPullD.cs" />
+    <Compile Include="Manager\PushA.cs" />
+    <Compile Include="Manager\PushBPushE.cs" />
     <Compile Include="Manager\SensorHubManager.cs" />
-    <Compile Include="Processing\ProcessingA.cs" />
-    <Compile Include="Processing\ProcessingB.cs" />
-    <Compile Include="Processing\ProcessingC.cs" />
-    <Compile Include="Processing\ProcessingD.cs" />
+    <Compile Include="Processing\Push\ProcessingA.cs" />
+    <Compile Include="Processing\Push\ProcessingB.cs" />
+    <Compile Include="Processing\Pull\ProcessingC.cs" />
+    <Compile Include="Processing\Pull\ProcessingD.cs" />
+    <Compile Include="Processing\Push\ProcessingE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using SensorManager.Helpers;
 using Sensors.Sensors;
 
 namespace SensorManager.Processing
 {
-    class ProcessingB : RunnableDataProvider<Bitmap>
+    class ProcessingB : RunnableDataProvider<Mat>
     {
         private readonly RgbCamera leftCamera;
         private readonly RgbCamera rightCamera;
@@ -29,7 +30,7 @@ namespace SensorManager.Processing
             this.rightCamera = cameraRight;
         }
 
-        public override Frame<Bitmap> QueryFrame()
+        public override Frame<Mat> QueryFrame()
         {
             var leftFrame = RecievedLeftFrame;
             var rightFrame = RecievedRightFrame;
@@ -40,8 +41,13 @@ namespace SensorManager.Processing
             //TODO DO Work here like yolo calculation and other stuff
             Thread.Sleep(new Random().Next(50, 70));
 
+
+            var img = leftFrame.Data.ToImage<Bgr, Byte>();
+            var flipped = img.Flip(FlipType.Horizontal);
+
             //CreateResult Frame
-            var newFrame = new Frame<Bitmap>(leftFrame.Data.Bitmap);
+            var newFrame = new Frame<Mat>(flipped.Mat);
+
 
             //Push data
             OnFrameChanged(newFrame);
